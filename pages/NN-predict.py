@@ -13,7 +13,10 @@ from tensorflow.keras.layers import DepthwiseConv2D
 # from keras.layers import DepthwiseConv2D
 import h5py
 
-
+st.title("Sports Image Prediction")
+st.selectbox("Which model do you want to use?",
+             ("sports_classifier_model_trained", "EfficientNetB0"),
+)
 
 # Download latest version
 path = kagglehub.dataset_download("gpiosenka/sports-classification")
@@ -37,7 +40,6 @@ with h5py.File(path, mode="r+") as f:
         f.attrs.modify('model_config', model_config_string)
         f.flush()
 
-st.title("Sports Image Classifier")
 
 # Define F1 score function
 def F1_score(y_true, y_pred):

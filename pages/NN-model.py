@@ -69,9 +69,14 @@ model.compile(optimizer='adam',
 # Train the model
 model.fit(train_data, validation_data=val_data, epochs=10)
 
+# Save the trained model
+model.save("sports_classifier_model_trained.h5")
+print("Model saved successfully!")
+st.write("Model saved successfully!")
+
 # Evaluate on test data
 test_loss, test_acc = model.evaluate(test_data)
-st.write(f"Test Accuracy: {test_acc:.2f}")
+st.write(f"Test Accuracy: {test_acc:.3f}")
 
 # Make predictions
 predictions = model.predict(test_data)

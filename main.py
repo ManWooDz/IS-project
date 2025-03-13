@@ -8,6 +8,7 @@ pages = {
     "Models": [
         st.Page("pages/ML-model.py", title="Machine Learning Models"),
         st.Page("pages/NN-predict.py", title="Neural Network Models"),
+        # st.Page("pages/NN-model.py", title="Neural Network Models"),
     ],
 }
 
