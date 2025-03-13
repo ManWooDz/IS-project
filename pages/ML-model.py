@@ -28,7 +28,7 @@ st.title("Sleep Health and Lifestyle Dataset")
 df = pd.read_csv(path)
 df2 = pd.read_csv(path)
 
-st.write("Original DataFrame")
+st.write("Original Dataset")
 st.write(df)
 
 
