@@ -1,0 +1,11 @@
+tensorflow
+numpy
+pandas
+# opencv-python
+# pillow
+matplotlib
+scikit-learn
+streamlit
+kaggle
+# h5py
+xgboost
