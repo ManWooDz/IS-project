@@ -1,17 +1,12 @@
 import streamlit as st
 import kagglehub
 import tensorflow as tf
-# print(tf.__version__)
 import numpy as np
 from PIL import Image
-# import keras
-
 from tensorflow import keras
-# print(keras.__version__)
 import os
-from tensorflow.keras.layers import DepthwiseConv2D
-# from keras.layers import DepthwiseConv2D
 import h5py
+
 
 st.title("Sports Image Prediction")
 st.subheader("Using EfficientNetB0 Model")
@@ -29,12 +24,6 @@ with h5py.File(path, mode="r+") as f:
         f.flush()
 
 
-# Define F1 score function
-def F1_score(y_true, y_pred):
-    precision = tf.keras.metrics.Precision()(y_true, y_pred)
-    recall = tf.keras.metrics.Recall()(y_true, y_pred)
-    return 2 * ((precision * recall) / (precision + recall + tf.keras.backend.epsilon()))
-
 
 model = keras.models.load_model(path, compile=False)
 model.compile(optimizer="adam", loss="sparse_categorical_crossentropy", metrics=["accuracy"])
@@ -42,27 +31,28 @@ model.compile(optimizer="adam", loss="sparse_categorical_crossentropy", metrics=
 
 # Class labels
 class_names = [
-    "air hockey", "amputee football", "archery", "arm wrestling", "axe throwing", 
-    "balance beam", "barrel racing", "baseball", "basketball", "baton twirling", 
-    "bike polo", "billiards", "bmx", "bobsled", "bowling", "boxing", "bull riding", 
-    "bungee jumping", "canoe slalom", "cheerleading", "chuckwagon racing", "cricket", 
-    "croquet", "curling", "disc golf", "fencing", "field hockey", "figure skating men", 
-    "figure skating pairs", "figure skating women", "fly fishing", "football", "formula 1 racing", 
-    "frisbee", "gaga", "giant slalom", "golf", "hammer throw", "hang gliding", "harness racing", 
-    "high jump", "hockey", "horse jumping", "horse racing", "horseshoe pitching", "hurdles", 
-    "hydroplane racing", "ice climbing", "ice yachting", "jai alai", "javelin", "jousting", "judo", 
-    "lacrosse", "log rolling", "luge", "motorcycle racing", "mushing", "nascar racing", 
-    "olympic wrestling", "parallel bar", "pole climbing", "pole dancing", "pole vault", "polo", 
-    "pommel horse", "rings", "rock climbing", "roller derby", "rollerblade racing", "rowing", "rugby", 
-    "sailboat racing", "shot put", "shuffleboard", "sidecar racing", "ski jumping", "sky surfing", 
-    "skydiving", "snowboarding", "snowmobile racing", "speed skating", "steer wrestling", 
-    "sumo wrestling", "surfing", "swimming", "table tennis", "tennis", "track bicycle", "trapeze", 
-    "tug of war", "ultimate", "uneven bars", "volleyball", "water cycling", "water polo", 
-    "weightlifting", "wheelchair basketball", "wheelchair racing", "wingsuit flying"
+    'Air Hockey', 'Amputee Football', 'Archery', 'Arm Wrestling', 'Axe Throwing',
+    'Balance Beam', 'Barrel Racing', 'Baseball', 'Basketball', 'Baton Twirling',
+    'Bike Polo', 'Billiards', 'Bmx', 'Bobsled', 'Bowling', 'Boxing', 'Bull Riding',
+    'Bungee Jumping', 'Canoe Slalom', 'Cheerleading', 'Chuckwagon Racing', 'Cricket',
+    'Croquet', 'Curling', 'Disc Golf', 'Fencing', 'Field Hockey', 'Figure Skating Men',
+    'Figure Skating Pairs', 'Figure Skating Women', 'Fly Fishing', 'Football', 'Formula 1 Racing',
+    'Frisbee', 'Gaga', 'Giant Slalom', 'Golf', 'Hammer Throw', 'Hang Gliding', 'Harness Racing',
+    'High Jump', 'Hockey', 'Horse Jumping', 'Horse Racing', 'Horseshoe Pitching', 'Hurdles',
+    'Hydroplane Racing', 'Ice Climbing', 'Ice Yachting', 'Jai Alai', 'Javelin', 'Jousting', 'Judo',
+    'Lacrosse', 'Log Rolling', 'Luge', 'Motorcycle Racing', 'Mushing', 'Nascar Racing',
+    'Olympic Wrestling', 'Parallel Bar', 'Pole Climbing', 'Pole Dancing', 'Pole Vault', 'Polo',
+    'Pommel Horse', 'Rings', 'Rock Climbing', 'Roller Derby', 'Rollerblade Racing', 'Rowing', 'Rugby',
+    'Sailboat Racing', 'Shot Put', 'Shuffleboard', 'Sidecar Racing', 'Ski Jumping', 'Sky Surfing',
+    'Skydiving', 'Snowboarding', 'Snowmobile Racing', 'Speed Skating', 'Steer Wrestling',
+    'Sumo Wrestling', 'Surfing', 'Swimming', 'Table Tennis', 'Tennis', 'Track Bicycle', 'Trapeze',
+    'Tug Of War', 'Ultimate', 'Uneven Bars', 'Volleyball', 'Water Cycling', 'Water Polo',
+    'Weightlifting', 'Wheelchair Basketball', 'Wheelchair Racing', 'Wingsuit Flying'
 ]
 
 # File uploader
-uploaded_file = st.file_uploader("Upload an image", type=["jpg", "png"])
+st.header("Upload an Image")
+uploaded_file = st.file_uploader("", type=["jpg", "png"])
 
 
 if uploaded_file is not None:
@@ -80,6 +70,23 @@ if uploaded_file is not None:
     # Display results
     st.image(image, caption="Uploaded Image", use_container_width = True)
     st.write(f"**Predicted Sport:** {class_names[predicted_class]}")
+    
+    accuracy = model.evaluate(img_array, np.array([predicted_class]))  # Using the predicted class as true label
+    st.write(f"**Model Accuracy (on uploaded image):** {accuracy[1] * 100:.2f}%")
+
+    
+
+st.divider()
+
+@st.dialog("Class Labels Used by the Model")
+def opened_dialog():
+    st.write("The model uses the following class labels:")
+    for class_name in class_names:
+        st.write(class_name)
+
+if st.button("Show all sports classes"):
+    opened_dialog()
+
 
 
 # # Load dataset for evaluation (replace with actual dataset)
