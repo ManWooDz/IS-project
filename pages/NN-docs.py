@@ -1,6 +1,6 @@
 import streamlit as st
 
-st.title("Model Development Process(Machine Learning)")
+st.title("Model Development Process(Neural Network)")
 # st.header("1.Data Collection")
 # st.html(
 #     "<p>The dataset used in this project was sourced from Kaggle, specifically the Sleep Health and Lifestyle Dataset. (<a href='https://www.kaggle.com/datasets/uom190346a/sleep-health-and-lifestyle-dataset'>Link to Dataset</a>) This dataset provides valuable insights into individuals' sleep patterns, health conditions, and lifestyle habits.</p>"
@@ -8,8 +8,9 @@ st.title("Model Development Process(Machine Learning)")
 
 st.markdown(f'''## 1. Data Preparation
 The model was trained using the Sports Classification Dataset from Kaggle, which consists of images labeled according to different sports. The key steps in data preparation included:  
-:white_check_mark: **Dataset Collection**: The dataset contains thousands of images spanning multiple sports categories.  
-:white_check_mark: **Data Cleaning & Preprocessing**:  
+#### **Dataset Collection**: 
+The dataset used for this Neural Network model was sourced from Kaggle, specifically the Sports Classification Dataset. ([Link to Dataset](https://www.kaggle.com/code/alnourabdalrahman9/sports-classification)) This dataset contains a diverse collection of sports images, categorized into 100 different sports classes. The dataset was chosen for its high-quality labeled images, making it suitable for training a deep learning model for sports image classification.  
+#### **Data Cleaning & Preprocessing**:  
 * Images were resized to 224×224 pixels to match the input shape required by deep learning models.
 * Pixel values were normalized (scaled between 0 and 1) for efficient model training.  
 ✅ Data Splitting: The dataset was divided into training, validation, and testing sets.

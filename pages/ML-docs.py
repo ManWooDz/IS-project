@@ -7,7 +7,7 @@ st.title("Model Development Process(Machine Learning)")
 # )
 
 st.markdown(f'''## 1.Data Collection
-The dataset used in this project was sourced from Kaggle, specifically the Sleep Health and Lifestyle Dataset. ([Link to Dataset](https://www.kaggle.com/datasets/uom190346a/sleep-health-and-lifestyle-dataset)) This dataset provides valuable insights into individuals' sleep patterns, health conditions, and lifestyle habits.
+The dataset used for this ML model was sourced from Kaggle, specifically the Sleep Health and Lifestyle Dataset. ([Link to Dataset](https://www.kaggle.com/datasets/uom190346a/sleep-health-and-lifestyle-dataset)) This dataset provides valuable insights into individuals' sleep patterns, health conditions, and lifestyle habits.
 #### About the Dataset
 ##### Dataset Overview:
 The Sleep Health and Lifestyle Dataset comprises 400 rows and 13 columns, covering a wide range of variables related to sleep and daily habits. It includes details such as gender, age, occupation, sleep duration, quality of sleep, physical activity level, stress levels, BMI category, blood pressure, heart rate, daily steps, and the presence or absence of sleep disorders.
@@ -41,23 +41,23 @@ The dataset used in this project is the Sleep Health and Lifestyle Dataset, whic
 #### Steps in Data Preparation:
 * Handling Missing Values:
     * The dataset contained missing values in categorical columns (e.g., "Sleep Disorder"). Missing values were replaced with "No" to ensure consistency.
-    ```
+    ```python
     df["Sleep Disorder"] = df["Sleep Disorder"].fillna("No")
     df2["Sleep Disorder"] = df2["Sleep Disorder"].fillna("No")
     ```
 * Feature Selection:
     * Features such as Age, Sleep Duration, Physical Activity Level, Stress Level, Heart Rate, BMI Category, and Daily Steps were selected based on their relevance to sleep quality prediction.
-    ```
+    ```python
         features = ["Age", "Sleep Duration", "Physical Activity Level", "Stress Level", "Heart Rate", "BMI Category", "Daily Steps"]
     ```
 * Encoding Categorical Variables:
     * Columns like Gender, Occupation, BMI Category, and Blood Pressure were converted into numerical values using Label Encoding for machine learning compatibility.
-    ```
+    ```python
         categorical_cols = ["Gender", "Occupation", "BMI Category", "Blood Pressure"]
     ```
 * Train-Test Split:
     * The dataset was split into training (80%) and testing (20%) to evaluate model performance.
-    ```
+    ```python
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=54)
     ```
 ## 3. Algorithm Theory
@@ -88,13 +88,13 @@ XGBoost (Extreme Gradient Boosting) is an optimized gradient boosting algorithm 
 #### Step 3: Train Models
 ###### Random Forest Training
 * Initialize a RandomForestClassifier with parameters:
-    ```
+    ```python
     RandomForestClassifier(n_estimators=100, random_state=42)
     ```
 * Train the model on the training data.
 ###### XGBoost Training
 * Initialize an XGBClassifier with parameters:
-    ```
+    ```python
     XGBClassifier(n_estimators=100, learning_rate=0.1, max_depth=3, random_state=42)
     ```
 * Train the model using the same training data.
