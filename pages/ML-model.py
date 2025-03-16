@@ -237,8 +237,14 @@ y = LabelEncoder().fit_transform(df2[target])
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=54)
 
 # Train XGBoost Classifier
-xgb_model = xgb.XGBClassifier(n_estimators=50, random_state=42, use_label_encoder=False, eval_metric='mlogloss')
-xgb_model.fit(X_train, y_train)
+@st.cache_resource
+def train_xgb():
+    model = xgb.XGBClassifier(n_estimators=50, random_state=42, use_label_encoder=False, eval_metric="mlogloss")
+    model.fit(X_train, y_train)
+    return model
+xgb_model = train_xgb()
+# xgb_model = xgb.XGBClassifier(n_estimators=50, random_state=42, use_label_encoder=False, eval_metric='mlogloss')
+# xgb_model.fit(X_train, y_train)
 
 # Predictions
 y_pred = xgb_model.predict(X_test)
