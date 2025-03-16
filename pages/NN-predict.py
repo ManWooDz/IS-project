@@ -15,7 +15,7 @@ st.markdown(f'''#### This prediction's using ResNet50 Model ([Link to Model Trai
 # Download latest version
 # path = kagglehub.dataset_download("gpiosenka/sports-classification")
 # path = os.path.join(path, "EfficientNetB0-100-(224 X 224)- 98.40.h5")
-path = "../IS-project/models/ResNet50_trained_model.keras"
+path = "/models/ResNet50_trained_model.keras"
 # st.write("path: ", path)
 
 
