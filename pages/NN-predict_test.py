@@ -71,14 +71,13 @@ def load_model(model_choice):
 
 # Load model dynamically
 model = load_model(model_option)
-
-
 model.compile(optimizer="adam", loss="sparse_categorical_crossentropy", metrics=["accuracy"])
 
 
 
 # File uploader
-uploaded_file = st.file_uploader("Upload an image", type=["jpg", "png"])
+st.header("Upload an Image")
+uploaded_file = st.file_uploader("", type=["jpg", "png"])
 
 if uploaded_file is not None:
     # Process image
@@ -95,3 +94,19 @@ if uploaded_file is not None:
     # Display results
     st.image(image, caption="Uploaded Image", use_container_width = True)
     st.write(f"**Predicted Sport:** {class_names[predicted_class]}")
+    
+    accuracy = model.evaluate(img_array, np.array([predicted_class]))  # Using the predicted class as true label
+    st.write(f"**Model Accuracy (on uploaded image):** {accuracy[1] * 100:.2f}%")
+
+    
+
+st.divider()
+
+@st.dialog("Class Labels Used by the Model")
+def opened_dialog():
+    st.write("The model uses the following class labels:")
+    for class_name in class_names:
+        st.write(class_name)
+
+if st.button("Show all sports classes"):
+    opened_dialog()

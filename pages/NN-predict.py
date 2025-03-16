@@ -9,19 +9,23 @@ import h5py
 
 
 st.title("Sports Image Prediction")
-st.subheader("Using EfficientNetB0 Model")
+st.markdown(f'''#### This prediction's using ResNet50 Model ([Link to Model Training on Kaggle](https://www.kaggle.com/code/prosper0v0/resnet50-model-sports-classification)) ''')
+# st.subheader("This prediction's using ResNet50 Model")
 
 # Download latest version
-path = kagglehub.dataset_download("gpiosenka/sports-classification")
-path = os.path.join(path, "EfficientNetB0-100-(224 X 224)- 98.40.h5") 
+# path = kagglehub.dataset_download("gpiosenka/sports-classification")
+# path = os.path.join(path, "EfficientNetB0-100-(224 X 224)- 98.40.h5")
+path = "../IS-project/models/ResNet50_trained_model.keras"
+# st.write("path: ", path)
 
 
-with h5py.File(path, mode="r+") as f:
-    model_config_string = f.attrs.get("model_config")
-    if model_config_string and '"groups": 1,' in model_config_string:
-        model_config_string = model_config_string.replace('"groups": 1,', '')
-        f.attrs.modify('model_config', model_config_string)
-        f.flush()
+
+# with h5py.File(path, mode="r+") as f:
+#     model_config_string = f.attrs.get("model_config")
+#     if model_config_string and '"groups": 1,' in model_config_string:
+#         model_config_string = model_config_string.replace('"groups": 1,', '')
+#         f.attrs.modify('model_config', model_config_string)
+#         f.flush()
 
 
 
@@ -57,7 +61,9 @@ uploaded_file = st.file_uploader("", type=["jpg", "png"])
 
 if uploaded_file is not None:
     # Process image
-    image = Image.open(uploaded_file).resize((224, 224))
+    # image = Image.open(uploaded_file).resize((224, 224))
+    image = Image.open(uploaded_file).resize((299, 299))
+
     # img_array = np.array(image) / 255.0  # Normalize
     img_array = np.array(image)
     img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension
