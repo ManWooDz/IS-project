@@ -1,10 +1,20 @@
 import streamlit as st
-import kagglehub
-import pandas as pd
 import numpy as np
-import tensorflow as tf
+import pandas as pd
 import os
-
+import random
+from PIL import Image
+import kagglehub
+import cv2
+import tensorflow as tf
+import matplotlib.pyplot as plt
+from tensorflow import keras
+from tensorflow.keras import layers, models, optimizers
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.layers import Input, Dense, Flatten, GlobalAveragePooling2D
+from tensorflow.keras.callbacks import Callback, EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
+from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
+from tensorflow.keras.optimizers import Adam
 
 # Download latest version
 path = kagglehub.dataset_download("gpiosenka/sports-classification")
