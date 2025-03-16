@@ -28,8 +28,8 @@ st.title("Sleep Health and Lifestyle Dataset")
 df = pd.read_csv(path)
 df2 = pd.read_csv(path)
 
-st.write("Original Dataset")
-st.write(df)
+# st.write("Original Dataset")
+# st.write(df)
 
 
 # Preprocessed Data-----------------------------------------------
@@ -160,6 +160,53 @@ if st.button("Predict Sleep Disorder"):
     st.write(f"### 🛌 Predicted Condition: **{readable_prediction}**")
     st.write(f"#### 💡 Recommendation:\n{suggestion}")
 
+n_estimators_range = [10, 50, 100, 200, 300, 400, 500]
+train_accuracies = []
+val_accuracies = []
+
+# Train models with different numbers of trees
+for n in n_estimators_range:
+    rf_model = RandomForestClassifier(n_estimators=n, random_state=42)
+    rf_model.fit(X_train, y_train)
+
+    # Compute accuracy
+    train_acc = accuracy_score(y_train, rf_model.predict(X_train))
+    val_acc = accuracy_score(y_test, rf_model.predict(X_test))
+
+    train_accuracies.append(train_acc)
+    val_accuracies.append(val_acc)
+
+# Convert accuracy to error rate (as a "loss" approximation)
+train_error = [1 - acc for acc in train_accuracies]
+val_error = [1 - acc for acc in val_accuracies]
+
+# Plot Accuracy vs. Number of Trees
+fig, ax = plt.subplots(1, 2, figsize=(12, 5))
+
+# Plot Accuracy
+ax[0].plot(n_estimators_range, train_accuracies, 'bo-', label="Training Accuracy")
+ax[0].plot(n_estimators_range, val_accuracies, 'ro-', label="Validation Accuracy")
+ax[0].set_xlabel("Number of Trees (n_estimators)")
+ax[0].set_ylabel("Accuracy")
+ax[0].set_title("Random Forest: Training vs Validation Accuracy")
+ax[0].legend()
+ax[0].grid()
+
+# Plot Error Rate (1 - Accuracy)
+ax[1].plot(n_estimators_range, train_error, 'bo-', label="Training Error")
+ax[1].plot(n_estimators_range, val_error, 'ro-', label="Validation Error")
+ax[1].set_xlabel("Number of Trees (n_estimators)")
+ax[1].set_ylabel("Error Rate")
+ax[1].set_title("Random Forest: Training vs Validation Error")
+ax[1].legend()
+ax[1].grid()
+
+# Show plots in Streamlit
+st.pyplot(fig)
+
+
+
+
 st.divider()
 #------------------------------------------------------------------------------------------
 
@@ -258,6 +305,64 @@ if st.button("Predict Sleep Disorder", key="predict_button"):
     # Display result with personalized suggestions
     st.write(f"### 🛌 Predicted Condition: **{readable_prediction}**")
     st.write(f"#### 💡 Recommendation:\n{suggestion}")
+
+
+#plot
+# Define XGBoost model
+xgb_model = xgb.XGBClassifier(
+    n_estimators=100, 
+    random_state=42, 
+    use_label_encoder=False, 
+    eval_metric="mlogloss"  # Set inside the model constructor
+)
+
+# Dictionary to store training history
+evals_result = {}
+
+# Train with evaluation tracking
+xgb_model.fit(
+    X_train, y_train,
+    eval_set=[(X_train, y_train), (X_test, y_test)],  # Track both training & validation
+    verbose=False  # Hide detailed logs
+)
+
+# Retrieve loss history
+train_loss = xgb_model.evals_result()['validation_0']['mlogloss']
+val_loss = xgb_model.evals_result()['validation_1']['mlogloss']
+
+# Predict on training and validation sets
+train_preds = xgb_model.predict(X_train)
+val_preds = xgb_model.predict(X_test)
+
+# Compute accuracy for training and validation sets
+train_acc = accuracy_score(y_train, train_preds)
+val_acc = accuracy_score(y_test, val_preds)
+
+# Plot training vs validation accuracy & loss
+epochs = range(1, len(train_loss) + 1)
+
+fig = plt.figure(figsize=(12, 5))
+
+# Plot Loss
+plt.subplot(1, 2, 1)
+plt.plot(epochs, train_loss, 'b', label="Training Loss")
+plt.plot(epochs, val_loss, 'r', label="Validation Loss")
+plt.xlabel("Epochs")
+plt.ylabel("Log Loss")
+plt.title("XGBoost Training vs Validation Loss")
+plt.legend()
+plt.grid()
+
+# Plot Accuracy (Only final values, since XGBoost does not track per epoch accuracy)
+plt.subplot(1, 2, 2)
+plt.bar(["Training Accuracy", "Validation Accuracy"], [train_acc, val_acc], color=["blue", "red"])
+plt.ylim(0, 1)  # Accuracy range 0-1
+plt.title("XGBoost Model Accuracy")
+plt.ylabel("Accuracy")
+plt.grid(axis="y")
+
+plt.tight_layout()
+st.pyplot(fig)
 
 #-------------------------------------------------------------------------------------------
 
