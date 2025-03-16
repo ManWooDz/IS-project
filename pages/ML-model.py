@@ -203,6 +203,7 @@ ax[1].grid()
 
 # Show plots in Streamlit
 st.pyplot(fig)
+plt.close(fig)
 
 
 
@@ -236,7 +237,7 @@ y = LabelEncoder().fit_transform(df2[target])
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=54)
 
 # Train XGBoost Classifier
-xgb_model = xgb.XGBClassifier(n_estimators=100, random_state=42, use_label_encoder=False, eval_metric='mlogloss')
+xgb_model = xgb.XGBClassifier(n_estimators=50, random_state=42, use_label_encoder=False, eval_metric='mlogloss')
 xgb_model.fit(X_train, y_train)
 
 # Predictions
@@ -298,7 +299,7 @@ sleep_quality_labels = {
 }
 
 # Predict Sleep Disorder
-if st.button("Predict Sleep Disorder", key="predict_button"):
+if st.button("Predict Sleep Disorder", key="predict_xgb"):
     prediction = rf_model.predict(new_data2)[0]  # Get single prediction
     readable_prediction, suggestion = sleep_quality_labels.get(prediction, ("Unknown", "No recommendation available."))
 
@@ -363,6 +364,7 @@ plt.grid(axis="y")
 
 plt.tight_layout()
 st.pyplot(fig)
+plt.close(fig)
 
 #-------------------------------------------------------------------------------------------
 
