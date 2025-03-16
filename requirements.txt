@@ -7,5 +7,6 @@ matplotlib
 scikit-learn
 streamlit
 kaggle
+kagglehub
 # h5py
 xgboost
