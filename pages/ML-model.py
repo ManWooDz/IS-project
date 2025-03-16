@@ -12,9 +12,9 @@ from sklearn.metrics import accuracy_score, classification_report
 # st.write(sklearn.__version__)
 
 # Download latest version of DataFrame
-# path = kagglehub.dataset_download("uom190346a/sleep-health-and-lifestyle-dataset")
-# path += "\Sleep_health_and_lifestyle_dataset.csv"
-path = "../datasets/Sleep_health_and_lifestyle_dataset.csv"
+path = kagglehub.dataset_download("uom190346a/sleep-health-and-lifestyle-dataset")
+path += "/Sleep_health_and_lifestyle_dataset.csv"
+# path = "../datasets/Sleep_health_and_lifestyle_dataset.csv"
 
 st.title("Sleep Health and Lifestyle Dataset")
 # st.write(path)
